@@ -15,7 +15,24 @@
  *  - Select target board: LOLIN(WEMOS) D1 R2 & Mini
  *  - Set Debug port to Serial
  *  - Set baud rate to 115200 in Serial monitor
+ *  - Install Adafruit GFX and ST7735 libraries
+ *  
+ * Electrical circuit
+ * 
+ * D1 Mini Pro ---> TFT display
+ * -------------------------------------------------
+ * 3V3              VCC             Voltage
+ * GND              GND             Ground
+ * D8               CS              Chip select
+ * D4               RST             Reset
+ * D3               RS              Data/Command
+ * D7               SDA             SPI Data
+ * D5               CLK             SPI Clock
+ *                    
  */
+
+#include "Adafruit_GFX.h"
+#include <Adafruit_ST7735.h> 
 
 #define VERSION "0.1"
 
@@ -28,6 +45,13 @@
     #define NBL2(x, y) { Serial.print(x); Serial.println(y); }
 #endif
 
+/* Define TFT display */
+#define TFT_CS D8
+#define TFT_DC D3
+#define TFT_RST D4
+
+Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
+
 /**
  * @brief Program initialization.
  */
@@ -36,6 +60,16 @@ void setup() {
         NBB(115200);
         NBL2(F("Air quality sensor v"), F(VERSION));
     #endif
+
+    // Initialize a ST7735S chip, black tab
+    tft.initR(INITR_BLACKTAB);   
+
+    // Show splash
+    tft.fillScreen(0x0000);
+    tft.setCursor(10, 80);
+    tft.setTextColor(0xffff);
+    tft.setTextSize(1);
+    tft.print("Air Quality Sensor");
 }
 
 /**
