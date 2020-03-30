@@ -19,13 +19,23 @@
 
 #define VERSION "0.1"
 
+/* Simple serial line monitoring/debuging */
+#define NOBUG 1 // Activate with non-zero value
+#if NOBUG
+    #define NBB(x) Serial.begin(x)
+    #define NB(x) Serial.print(x)
+    #define NBL(x) Serial.println(x)
+    #define NBL2(x, y) { Serial.print(x); Serial.println(y); }
+#endif
+
 /**
  * @brief Program initialization.
  */
 void setup() {
-    Serial.begin(115200);
-    Serial.print(F("Air quality sensor v"));
-    Serial.println(F(VERSION));
+    #if NOBUG
+        NBB(115200);
+        NBL2(F("Air quality sensor v"), F(VERSION));
+    #endif
 }
 
 /**
