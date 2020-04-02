@@ -28,6 +28,17 @@
  * D3               RS              Data/Command
  * D7               SDA             SPI Data
  * D5               CLK             SPI Clock
+ * 
+ * D1 Mini Pro ---> Sensors
+ * -------------------------------------------------
+ * 3V3              VCC             Voltage
+ * GND              GND             Ground
+ * D1               SCL             I2C Clock
+ * D2               SDA             I2C Data
+ * D6               WAK             Wake-up CCS911 (via LOW)
+ *                  INT             Interrupt CCS911 (via LOW)
+ *                  RST             Reset CCS911 (via LOW)
+ *                  ADD             I2C Address change
  *                    
  */
 
