@@ -42,10 +42,16 @@
  *                    
  */
 
-#include "Adafruit_GFX.h"
-#include <Adafruit_ST7735.h> 
-
+// App version
 #define VERSION "0.1"
+
+// Enable/disable display
+#define USE_TFT_ST7735 0
+
+#if USE_TFT_ST7735
+    #include "Adafruit_GFX.h"
+    #include <Adafruit_ST7735.h> 
+#endif
 
 /* Simple serial line monitoring/debuging */
 #define NOBUG 1 // Activate with non-zero value
@@ -56,22 +62,15 @@
     #define NBL2(x, y) { Serial.print(x); Serial.println(y); }
 #endif
 
-/* Define TFT display */
+/* Define TFT display and tools */
+#if USE_TFT_ST7735    
+
 #define TFT_CS D8
 #define TFT_DC D3
 #define TFT_RST D4
+Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);    
 
-Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
-
-/**
- * @brief Program initialization.
- */
-void setup() {
-    #if NOBUG
-        NBB(115200);
-        NBL2(F("Air quality sensor v"), F(VERSION));
-    #endif
-
+void initTFTDisplay() {
     // Initialize a ST7735S chip, black tab
     tft.initR(INITR_BLACKTAB);   
 
@@ -80,11 +79,28 @@ void setup() {
     tft.setCursor(10, 80);
     tft.setTextColor(0xffff);
     tft.setTextSize(1);
-    tft.print("Air Quality Sensor");
+    tft.print("Air Quality Sensor");    
+}
+
+#endif
+
+/**
+ * @brief Program initialization.
+ */
+void setup() {
+    #if NOBUG
+    NBB(115200);
+    NBL2(F("Air quality sensor v"), F(VERSION));
+    #endif
+
+    #if USE_TFT_ST7735
+    initTFTDisplay();
+    #endif
 }
 
 /**
  * @brief Program main loop.
  */
 void loop() {
+    
 }
